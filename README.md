@@ -1,2 +1,4 @@
-# share-memory-ipc-demo
-fast ipc by shm demo
+# sync ipc by shm
+
+### TODO
+1. atomic update message

@@ -11,6 +11,13 @@
 
 #define PATHNAME "."
 #define PROJ_ID 0x666
+#define MSG_SIZE 16
+
+typedef struct msg_queue {
+    int flag;
+    char data[MSG_SIZE];
+} msg_queue;
+
 
 int createShm(int size);
 

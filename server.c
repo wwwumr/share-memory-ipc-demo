@@ -2,21 +2,30 @@
 
 #define SERVER_SIZE 4096
 
-int main() {
+int write_data(char *src, msg_queue *dst) {
+
+    while ( dst->flag ) {}
+
+    strcpy(dst->data, src);
+    dst->flag = 1;
+}
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        printf("argc isn' t 2\n");
+        return 0;
+    }
+
     int shmid = createShm(SERVER_SIZE);
 
-    char *addr = (char *)shmat(shmid, NULL, 0);
+    msg_queue *addr = (msg_queue *)shmat(shmid, NULL, 0);
     if (addr < 0) {
         perror("shmat");
         return -1;
     }
 
-    char *info = "hello me!";
-    int len = strlen(info);
-    for (int i = 0; i < len; i++) {
-        addr[i] = info[i];
-    }
-    addr[len] = '\0';
+    char *info = argv[1];
+    write_data(info, addr);
 
     shmdt(addr);
     return 0;

@@ -4,10 +4,21 @@
 
 int main() {
     int shmid = getShm(CLIENT_SIZE);
-    char *addr = shmat(shmid, NULL, 0);
+    msg_queue *addr = (msg_queue *)shmat(shmid, NULL, 0);
 
-    while (1) {
-        printf("%s\n", addr);
+    int running = 1;
+
+    char msg[MSG_SIZE];
+
+    addr->flag = 0;
+    addr->data[0] = '\0';
+
+    while (running) {
+        if (addr->flag) {
+            strcpy(msg, addr->data);
+            printf("receve msg: %s\n", msg);
+            addr->flag = 0;
+        }
     }
 
     shmdt(addr);
